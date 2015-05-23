@@ -1,0 +1,36 @@
+﻿TABLE {
+	border-collapse: collapse;
+}
+TD {
+	border: 1px solid black;
+	padding: 5px;
+}
+P {
+	margin: 0px;
+}
+A:link {
+    color: #0000FF;
+	text-decoration: none;
+}
+A:visited {
+    color: #0000FF;
+	text-decoration: none;
+}
+A:hover {
+    color: #FF0000;
+	text-decoration: none;
+}
+A:active {
+    color: #00FFFF;
+	text-decoration: none;
+}
+.menu {
+	margin: 0; /* Обнуляем значение отступов */
+    padding: 4px; /* Значение полей */
+}
+.menu-item {
+	display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+    border: 1px solid #000; /* Рамка вокруг текста */
+    padding: 3px; /* Поля вокруг текста */
+}
