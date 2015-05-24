@@ -33,31 +33,38 @@
 			$main->sql_query[1] = "SELECT * FROM players WHERE id='$id'";
 			$main->sql_execute(1);
 			$row = mysql_fetch_array($main->sql_res[1]);
+			$check1 = "";
+			$check2 = "";
+			switch ($row['gender']) {
+				case 'male': $check1 = " CHECKED"; break;
+				case 'female': $check2 = " CHECKED"; break;
+			}
 			echo "<form action=\"edit_player.php\" method=\"post\" style=\"margin-top:10px;\">";
+			echo "<input name=\"id\" type=\"hidden\" value=\"".$row['id']."\">";
 			echo "<table>";
 				echo "<tr>";
-					echo "<td>Фамилия:</td><td><input name=\"surname\" type=\"text\" value=\"".$row['surname']."\"</td>";
+					echo "<td>Фамилия:</td><td><input name=\"surname\" type=\"text\" value=\"".$row['surname']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Имя:</td><td><input name=\"name\" type=\"text\" value=\"".$row['name']."\"</td>";
+					echo "<td>Имя:</td><td><input name=\"name\" type=\"text\" value=\"".$row['name']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Отчество:</td><td><input name=\"patronymic\" type=\"text\" value=\"".$row['patronymic']."\"</td>";
+					echo "<td>Отчество:</td><td><input name=\"patronymic\" type=\"text\" value=\"".$row['patronymic']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Пол:</td><td><input name=\"gender\" type=\"radio\" value=\"male\">Мужской<input name=\"gender\" type=\"radio\" value=\"female\">Женский</td>";
+					echo "<td>Пол:</td><td><input name=\"gender\" type=\"radio\" value=\"male\"$check1>Мужской<input name=\"gender\" type=\"radio\" value=\"female\"$check2>Женский</td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Дата рождения:</td><td>-</td>";
+					echo "<td>Дата рождения:</td><td><input name=\"birthday\" type=\"text\" value=\"".$row['birthday']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Дата регистрации:</td><td>-</td>";
+					echo "<td>Дата регистрации:</td><td><input name=\"reg\" type=\"text\" value=\"".$row['reg']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Заметки:</td><td>-</td>";
+					echo "<td>Заметки:</td><td><textarea name=\"note\">".$row['note']."</textarea></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Фото:</td><td>-</td>";
+					echo "<td>Фото:</td><td><input name=\"photo\" type=\"text\" value=\"".$row['photo']."\"></td>";
 				echo "</tr>";
 				echo "<tr>";
 					echo "<td colspan=\"2\" style=\"text-align:center\"><input type=\"submit\" value=\"Отредактировать\"></td>";
@@ -88,7 +95,7 @@
 		$main->sql_execute(2);
 		
 		$n = mysql_result($main->sql_res[2],0);
-		$pages = floor($n/15)+1;
+		$pages = ceil($n/15);
 		echo "<p>Игроков: $n</p>";
 		echo "<p>Страниц: $pages</p>";
 		
