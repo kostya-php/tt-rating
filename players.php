@@ -3,31 +3,51 @@
 	$page_name = "Игроки";
 	
 	include "1_header.php";
-	
-	// проверка строки на наличие русских символов
-	function check_str($s) {
-		if (preg_match("/^[а-яёa-z]+$/iu",$s)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	// проверка на положительное число
-	function check_num($a) {
-		if(($a>0)and(is_numeric($a))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
+
 	require_once "mysql.class.php";
 	$main = new Mysql();
 	$main->sql_connect();
-	
+	/*
+	if(isset($_GET['action'])) {
+		switch($_GET['action']) {
+			case "add_player": {
+				echo "<form action=\"add_player.php\" method=\"post\" style=\"margin-top:10px;\">";
+				echo "<table>";
+					echo "<tr>";
+						echo "<td>Фамилия:</td><td><input name=\"surname\" type=\"text\" value=\"\" style=\"width:200px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Имя:</td><td><input name=\"name\" type=\"text\" value=\"\" style=\"width:200px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Отчество:</td><td><input name=\"patronymic\" type=\"text\" value=\"\" style=\"width:200px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Пол:</td><td><input name=\"gender\" type=\"radio\" value=\"male\">Мужской<input name=\"gender\" type=\"radio\" value=\"female\">Женский</td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Дата рождения:</td><td><input class=\"datepicker\" name=\"birthday\" type=\"text\" value=\"\" style=\"width:70px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Дата регистрации:</td><td><input class=\"datepicker\" name=\"reg\" type=\"text\" value=\"\" style=\"width:70px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Заметки:</td><td><textarea name=\"note\" style=\"width:200px;\"></textarea></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td>Фото:</td><td><input name=\"photo\" type=\"text\" value=\"\" style=\"width:200px;\"></td>";
+					echo "</tr>";
+					echo "<tr>";
+						echo "<td colspan=\"2\" style=\"text-align:center\"><input type=\"submit\" value=\"Добавить\"></td>";
+					echo "</tr>";
+				echo "</table>";
+				echo "</form>";
+			}
+		}
+	} else
+		*/
 	if(isset($_GET['id'])) {
-		if(check_num($_GET['id'])) {
+		if($main->check_num($_GET['id'])) {
 			// форма редактирования игрока
 			$id = $_GET['id'];
 			$main->sql_query[1] = "SELECT * FROM players WHERE id='$id'";
@@ -39,32 +59,33 @@
 				case 'male': $check1 = " CHECKED"; break;
 				case 'female': $check2 = " CHECKED"; break;
 			}
+			echo "<h2>Редактирование игрока \"".$row['surname']." ".$row['name']." ".$row['patronymic']."\"</h2>";
 			echo "<form action=\"edit_player.php\" method=\"post\" style=\"margin-top:10px;\">";
 			echo "<input name=\"id\" type=\"hidden\" value=\"".$row['id']."\">";
 			echo "<table>";
 				echo "<tr>";
-					echo "<td>Фамилия:</td><td><input name=\"surname\" type=\"text\" value=\"".$row['surname']."\"></td>";
+					echo "<td>Фамилия:</td><td><input name=\"surname\" type=\"text\" value=\"".$row['surname']."\" style=\"width:200px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Имя:</td><td><input name=\"name\" type=\"text\" value=\"".$row['name']."\"></td>";
+					echo "<td>Имя:</td><td><input name=\"name\" type=\"text\" value=\"".$row['name']."\" style=\"width:200px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Отчество:</td><td><input name=\"patronymic\" type=\"text\" value=\"".$row['patronymic']."\"></td>";
+					echo "<td>Отчество:</td><td><input name=\"patronymic\" type=\"text\" value=\"".$row['patronymic']."\" style=\"width:200px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
 					echo "<td>Пол:</td><td><input name=\"gender\" type=\"radio\" value=\"male\"$check1>Мужской<input name=\"gender\" type=\"radio\" value=\"female\"$check2>Женский</td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Дата рождения:</td><td><input name=\"birthday\" type=\"text\" value=\"".$row['birthday']."\"></td>";
+					echo "<td>Дата рождения:</td><td><input class=\"datepicker\" name=\"birthday\" type=\"text\" value=\"".$row['birthday']."\" style=\"width:70px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Дата регистрации:</td><td><input name=\"reg\" type=\"text\" value=\"".$row['reg']."\"></td>";
+					echo "<td>Дата регистрации:</td><td><input class=\"datepicker\" name=\"reg\" type=\"text\" value=\"".$row['reg']."\" style=\"width:70px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Заметки:</td><td><textarea name=\"note\">".$row['note']."</textarea></td>";
+					echo "<td>Заметки:</td><td><textarea name=\"note\" style=\"width:200px;\">".$row['note']."</textarea></td>";
 				echo "</tr>";
 				echo "<tr>";
-					echo "<td>Фото:</td><td><input name=\"photo\" type=\"text\" value=\"".$row['photo']."\"></td>";
+					echo "<td>Фото:</td><td><input name=\"photo\" type=\"text\" value=\"".$row['photo']."\" style=\"width:200px;\"></td>";
 				echo "</tr>";
 				echo "<tr>";
 					echo "<td colspan=\"2\" style=\"text-align:center\"><input type=\"submit\" value=\"Отредактировать\"></td>";
@@ -77,10 +98,10 @@
 		$page = 1;
 		$search = "-";
 		if(isset($_GET['search']))
-			if(check_str($_GET['search']))
+			if($main->check_str($_GET['search']))
 				$search = $_GET['search'];
 		if(isset($_GET['players_page']))
-			if(check_num($_GET['players_page']))
+			if($main->check_num($_GET['players_page']))
 				$page = $_GET['players_page'];
 
 		// делаем выборку 15-ти игроков
@@ -96,10 +117,7 @@
 		
 		$n = mysql_result($main->sql_res[2],0);
 		$pages = ceil($n/15);
-		echo "<p>Игроков: $n</p>";
-		echo "<p>Страниц: $pages</p>";
-		
-		echo "<table style=\"min-width: 400px;\">";
+		echo "<table style=\"min-width: 400px;margin-top: 10px;\">";
 		echo "<tr>";
 		echo "<td colspan=\"2\">";
 		echo "<form method=\"get\">";
@@ -168,7 +186,7 @@
 			}
 			echo "</td>";
 		}
-		
+		echo "<td style=\"width:150px;text-align:center;border:0px;\"><a href=\"add_player.php\">Добавить игрока</a></td>";
 		echo "</tr>";
 		echo "</table>";
 

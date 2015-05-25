@@ -13,8 +13,12 @@
 	<meta charset="utf-8">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="style.css">
-	<script type="text/JavaScript" src="script.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/pickmeup.css">
+	<script type="text/JavaScript" src="js/jquery.js"></script>
+	<script type="text/JavaScript" src="js/script.js"></script>
+	<script type="text/JavaScript" src="js/jquery.pickmeup.min.js"></script>
+
 </head>
 
 <body>
