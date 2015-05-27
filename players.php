@@ -28,7 +28,9 @@
 <h2>Редактирование игрока "$surname $name $patronymic"</h2>
 </form>
 <form action="delete_player.php" method="post">
-<input type="submit" value="Удалить игрока" style="font-size: 10px;color: red;">
+	<input name="id" type="hidden" value="$id">
+	<input name="fullname" type="hidden" value="$surname $name $patronymic">
+	<input type="submit" value="Удалить игрока" style="font-size: 10px;color: red;">
 </form>
 <form action="edit_player.php" method="post" style="margin-top:10px;">
 <input name="id" type="hidden" value="$id">
@@ -67,9 +69,12 @@ ATATA;
 		// отображение списка игроков
 		$page = 1;
 		$search = "-";
+		$title = "Игроки";
 		if(isset($_GET['search']))
-			if($main->check_str($_GET['search']))
+			if($main->check_str($_GET['search'])) {
 				$search = $_GET['search'];
+				$title = "Игроки (результаты поиска)";
+			}
 		if(isset($_GET['players_page']))
 			if($main->check_num($_GET['players_page']))
 				$page = $_GET['players_page'];
@@ -89,15 +94,9 @@ ATATA;
 		$pages = ceil($n/15);
 		// далее генерируем таблицу и выводим список 15-ти игроков
 		echo <<<ATATA
-<h2>Игроки</h2>
+<h2>$title</h2>
+<button onclick="location.href='add_player.php'" style="color:blue;font-size:10px;">Добавить игрока</button>
 <table style="min-width: 400px;margin-top: 10px;">
-	<tr>
-		<td colspan="2">
-			<form method="get">
-			Поиск: <input type="text" name="search" value="" style="width:85%;">
-			</form>
-		</td>
-	</tr>
 	<tr>
 		<td style="width:25px;"><b>#</b></td>
 		<td><b>Игрок</b></td>
@@ -123,8 +122,17 @@ ATATA;
 			}
 		}
 		echo <<<ATATA
+		
+	
+	<tr>
+		<td colspan="2" style="border:0px;">
+			<form method="get">
+			Поиск: <input type="text" name="search" value="" style="width:85%;">
+			</form>
+		</td>
+	</tr>
 \n	<tr>
-		<td colspan="2" style="padding:0px;">
+		<td colspan="2" style="padding:0px;border:0px;">
 ATATA;
 		// пагинатор
 		echo <<<ATATA
@@ -168,7 +176,6 @@ ATATA;
 			echo "</td>\n";
 		}
 		echo <<<ATATA
-				<td style="width:150px;text-align:center;border:0px;"><a href="add_player.php">Добавить игрока</a></td>
 			</tr>
 		</table>
 		</td>
