@@ -136,7 +136,7 @@ ATATA;
 		<td>Фото:</td><td><input name="photo" type="text" value="" style="width:200px;"></td>
 	</tr>
 	<tr>
-		<td colspan="2" style="text-align:center"><input type="submit" value="Добавить"></td>
+		<td colspan="2" style="text-align:center"><input type="submit" value="Добавить" style="color:blue;"></td>
 	</tr>
 </table>
 </form>
