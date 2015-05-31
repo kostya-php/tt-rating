@@ -10,4 +10,13 @@
 			monthsShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек']
 		} 
 	});
+	$(".player-select").chosen({
+		no_results_text: "Игрок не найден!",
+		single_backstroke_delete: false,
+		search_contains: true,
+		width: "250px"
+	});
+	$('.player-select').on('change', function(evt, params) {
+		
+	});
 });
