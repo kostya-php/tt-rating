@@ -5,8 +5,77 @@
 	$main = new Mysql();
 	$main->sql_connect();
 	if(isset($_GET['id'])) {
-		
+		// если выбран турнир, вывести о нем информацию
+		if(is_numeric($_GET['id'])) {
+			// если id корректный
+			$tournament = $_GET['id'];
+			$main->sql_query[1] = "SELECT * FROM tournaments WHERE id='$tournament'";
+			$main->sql_execute(1);
+			if(mysql_num_rows($main->sql_res[1])>0) {
+				$row = mysql_fetch_array($main->sql_res[1]);
+				echo "<h2>Турнир \"".$row['name']."\"</h2>";
+				$main->sql_query[1] = "SELECT * FROM in_tournament LEFT JOIN players ON players.id=in_tournament.player WHERE tournament='$tournament'";
+				$main->sql_execute(1);
+				echo $main->sql_err[1];
+				echo "<p><b>Игроки на турнире:</b></p>";
+				while ($row = mysql_fetch_array($main->sql_res[1])) {
+					echo "<p>".$row['surname']." ".$row['name']." ".$row['patronymic']."</p>";
+				}
+				echo "<p><b>Игры:</b></p>";
+				echo <<<ATATA
+<table>
+	<tr>
+		<!--<td>id</td>-->
+		<td>#</td>
+		<td>Игрок 1</td>
+		<td>Результат</td>
+		<td>Игрок 2</td>
+		<td>Статус</td>
+	</tr>
+ATATA;
+				//$main->sql_query[1] = "SELECT * FROM matches LEFT JOIN players ON players.id=matches.player1 WHERE tournament='$tournament'";
+				$main->sql_query[1] = "SELECT matches.*,
+					t1.surname as surname1,
+					t1.name as name1,
+					t1.patronymic as patronymic1,
+					t2.surname as surname2,
+					t2.name as name2,
+					t2.patronymic as patronymic2
+				FROM matches
+				LEFT JOIN players AS t1 ON t1.id=matches.player1
+				LEFT JOIN players AS t2 ON t2.id=matches.player2
+				WHERE tournament='$tournament'";
+				$main->sql_execute(1);
+				while ($row = mysql_fetch_array($main->sql_res[1])) {
+					//var_dump($row);
+					//echo "<br />";
+					//echo "<br />";
+					$id = $row['id'];
+					$number = $row['number'];
+					$player1 = $row['surname1']." ".$row['name1']." ".$row['patronymic1'];
+					$player2 = $row['surname2']." ".$row['name2']." ".$row['patronymic2'];
+					$status = $row['status'];
+					echo <<<ATATA
+	<tr>
+		<!--<td>$id</td>-->
+		<td>$number</td>
+		<td>$player1</td>
+		<td></td>
+		<td>$player2</td>
+		<td>$status</td>
+	</tr>
+ATATA;
+				}
+				echo <<<ATATA
+</table>
+ATATA;
+			}
+		} else {
+			// если некорректный id
+			Header ("Location: tournaments.php");
+		}
 	} else {
+		// если не выбран турнир, отобразить все турниры
 		$main->sql_query[1] = "SELECT * FROM tournaments ORDER BY date ASC";
 		$main->sql_execute(1);
 		echo <<<ATATA
@@ -35,6 +104,6 @@ ATATA;
 	
 	
 	}
-	
+	$main->sql_close();
 	include "2_footer.php";
 ?>

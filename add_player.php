@@ -15,24 +15,20 @@
 		if(isset($_POST['reg']))$reg = $_POST['reg']; else $reg = "";
 		if(isset($_POST['note']))$note = $_POST['note']; else $note = "";
 		if(isset($_POST['photo']))$photo = $_POST['photo']; else $photo = "";
-		$error = false;
+		$error = NULL;
 		if(!$main->check_str($surname)) {
-			$error = true;
-			echo "<p style=\"color:red;\">Неверно заполнено поле \"Фамилия\"</p>";
+			$error.="<p style=\"color:red;\">Неверно заполнено поле \"Фамилия\"</p>";
 		}
 		if(!$main->check_str($name)) {
-			$error = true;
-			echo "<p style=\"color:red;\">Неверно заполнено поле  \"Имя\"</p>";
+			$error.="<p style=\"color:red;\">Неверно заполнено поле  \"Имя\"</p>";
 		}
 		if(!$main->check_str($patronymic)) {
-			$error = true;
-			echo "<p style=\"color:red;\">Неверно заполнено поле \"Отчество\"</p>";
+			$error.="<p style=\"color:red;\">Неверно заполнено поле \"Отчество\"</p>";
 		}
 		$check1 = "";
 		$check2 = "";
 		if(($gender!="male")and($gender!="female")) {
-			$error = true;
-			echo "<p style=\"color:red;\">Не выбран пол</p>";
+			$error.="<p style=\"color:red;\">Не выбран пол</p>";
 		} else {
 			switch($gender) {
 				case "male"; $check1 = " CHECKED";break;
@@ -41,25 +37,21 @@
 		}
 		$translit_name = $main->rus2translit($surname." ".$name." ".$patronymic);
 		if(!$main->validateDate($birthday, "Y-m-d")) {
-			$error = true;
-			echo "<p style=\"color:red;\">Неверно заполнено поле  \"Дата рождения\"</p>";
+			$error.="<p style=\"color:red;\">Неверно заполнено поле  \"Дата рождения\"</p>";
 		}
 		if(!$main->validateDate($reg, "Y-m-d")) {
-			$error = true;
-			echo "<p style=\"color:red;\">Неверно заполнено поле \"Дата регистрации\"</p>";
+			$error.="<p style=\"color:red;\">Неверно заполнено поле \"Дата регистрации\"</p>";
 		}
 		if($note!="")
 			if (!preg_match("/^[0-9а-яёa-z-\s\/.,()]+$/iu",$note)) {
-				$error = true;
-				echo "<p style=\"color:red;\">Неверно заполнено поле \"Примечание\"</p>";
+				$error.="<p style=\"color:red;\">Неверно заполнено поле \"Примечание\"</p>";
 			}
 		if($photo!="")
 			if (!preg_match("/^[0-9a-z-\/.:]+$/iu",$photo)) {
-				$error = true;
-				echo "<p style=\"color:red;\">Неверно заполнено поле \"Фото\"</p>";
+				$error.="<p style=\"color:red;\">Неверно заполнено поле \"Фото\"</p>";
 			}
 		// если имеются ошибки, вывести заного форму с уже введенными данными
-		if($error) {
+		if($error!=NULL) {
 			echo <<<ATATA
 <h2>Добавить игрока</h2>
 <form action="add_player.php" method="post" style="margin-top:10px;">
@@ -93,6 +85,7 @@
 	</tr>
 </table>
 </form>
+$error
 ATATA;
 		} else {
 			// если ошибок нет, сделать запрос в БД

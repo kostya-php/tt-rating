@@ -51,7 +51,8 @@
 					Header ("Location: players.php?id=$id");
 					break;
 				}
-			$main->sql_query[1] = "UPDATE players SET surname='$surname', name='$name', patronymic='$patronymic', gender='$gender', birthday='$birthday', reg='$reg', note='$note', photo='$photo' WHERE id='$id'";
+			$fullname_translit = $main->rus2translit($surname." ".$name." ".$patronymic);
+			$main->sql_query[1] = "UPDATE players SET surname='$surname', name='$name', patronymic='$patronymic', fullname_translit='$fullname_translit', gender='$gender', birthday='$birthday', reg='$reg', note='$note', photo='$photo' WHERE id='$id'";
 			$main->sql_execute(1);
 			$main->sql_close();
 			Header("Location: players.php?id=$id");
