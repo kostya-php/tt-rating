@@ -14,11 +14,12 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/pickmeup.css">
+	<link rel="stylesheet" href="css/bootstrap-datepicker.standalone.min.css">
 	<link rel="stylesheet" href="css/chosen.min.css">
 	<script type="text/JavaScript" src="js/jquery.js"></script>
 	<script type="text/JavaScript" src="js/script.js"></script>
-	<script type="text/JavaScript" src="js/jquery.pickmeup.min.js"></script>
+	<script type="text/JavaScript" src="js/bootstrap-datepicker.min.js"></script>
+	<script type="text/JavaScript" src="js/bootstrap-datepicker.ru.min.js"></script>
 	<script type="text/JavaScript" src="js/chosen.jquery.min.js"></script>
 
 </head>

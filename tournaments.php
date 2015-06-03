@@ -5,9 +5,13 @@
 	$main = new Mysql();
 	$main->sql_connect();
 	if(isset($_GET['id'])) {
+		// ================================
 		// если выбран турнир, вывести о нем информацию
+		// ================================
 		if(is_numeric($_GET['id'])) {
+			// =============
 			// если id корректный
+			// =============
 			$tournament = $_GET['id'];
 			$main->sql_query[1] = "SELECT * FROM tournaments WHERE id='$tournament'";
 			$main->sql_execute(1);
@@ -18,22 +22,24 @@
 				$main->sql_execute(1);
 				echo $main->sql_err[1];
 				echo "<p><b>Игроки на турнире:</b></p>";
+				echo "<ol>";
 				while ($row = mysql_fetch_array($main->sql_res[1])) {
-					echo "<p>".$row['surname']." ".$row['name']." ".$row['patronymic']."</p>";
+					echo "<li>".$row['surname']." ".$row['name']." ".$row['patronymic']."</li>";
 				}
+				echo "</ol>";
 				echo "<p><b>Игры:</b></p>";
 				echo <<<ATATA
 <table>
 	<tr>
 		<!--<td>id</td>-->
-		<td>#</td>
-		<td>Игрок 1</td>
-		<td>Результат</td>
-		<td>Игрок 2</td>
-		<td>Статус</td>
+		<td><b>#</b></td>
+		<td><b>Игрок 1</b></td>
+		<td><b>Результат</b></td>
+		<td><b>Игрок 2</b></td>
+		<td><b>Статус</b></td>
+		<td><b>Действия</b></td>
 	</tr>
 ATATA;
-				//$main->sql_query[1] = "SELECT * FROM matches LEFT JOIN players ON players.id=matches.player1 WHERE tournament='$tournament'";
 				$main->sql_query[1] = "SELECT matches.*,
 					t1.surname as surname1,
 					t1.name as name1,
@@ -47,22 +53,21 @@ ATATA;
 				WHERE tournament='$tournament'";
 				$main->sql_execute(1);
 				while ($row = mysql_fetch_array($main->sql_res[1])) {
-					//var_dump($row);
-					//echo "<br />";
-					//echo "<br />";
 					$id = $row['id'];
 					$number = $row['number'];
-					$player1 = $row['surname1']." ".$row['name1']." ".$row['patronymic1'];
-					$player2 = $row['surname2']." ".$row['name2']." ".$row['patronymic2'];
+					$player1 = $row['surname1']." ".$row['name1'];//." ".$row['patronymic1'];
+					$res = $row['x'].":".$row['y']."<br />(".$row['rounds'].")";
+					$player2 = $row['surname2']." ".$row['name2'];//." ".$row['patronymic2'];
 					$status = $row['status'];
 					echo <<<ATATA
 	<tr>
 		<!--<td>$id</td>-->
-		<td>$number</td>
-		<td>$player1</td>
-		<td></td>
-		<td>$player2</td>
-		<td>$status</td>
+		<td style="text-align:center;padding:3px;">$number</td>
+		<td style="text-align:center;padding:3px;">$player1</td>
+		<td style="text-align:center;padding:3px;">$res</td>
+		<td style="text-align:center;padding:3px;">$player2</td>
+		<td style="text-align:center;padding:3px;">$status</td>
+		<td style="text-align:center;padding:3px;"><a href="matches.php?id=$id">[Р]</a></td>
 	</tr>
 ATATA;
 				}
@@ -71,11 +76,15 @@ ATATA;
 ATATA;
 			}
 		} else {
+			// ==============
 			// если некорректный id
+			// ==============
 			Header ("Location: tournaments.php");
 		}
 	} else {
+		// ===============================
 		// если не выбран турнир, отобразить все турниры
+		// ===============================
 		$main->sql_query[1] = "SELECT * FROM tournaments ORDER BY date ASC";
 		$main->sql_execute(1);
 		echo <<<ATATA
@@ -101,8 +110,6 @@ ATATA;
 ATATA;
 		}
 		echo "</table>";
-	
-	
 	}
 	$main->sql_close();
 	include "2_footer.php";
