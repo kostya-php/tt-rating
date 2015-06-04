@@ -26,7 +26,7 @@
 		
 		$error = NULL;
 		
-		if(!preg_match("/^[0-9а-яёa-z-\s.,]+$/iu",$name)) {
+		if(!preg_match("/^[0-9а-яёa-z-\s.,!]+$/iu",$name)) {
 			$error.="<p style=\"color:red;\">Неверно заполнено поле \"Название турнира\"</p>";
 		}
 		
@@ -54,81 +54,10 @@
 			// ============
 			// если есть ошибки
 			// ============
-			/*
 			echo <<<ATATA
-<h2>Добавить турнир</h2>
-<form action="add_tournament.php" method="post">
-<table>
-	<tr>
-		<td>Название турнира*:</td>
-		<td><input name="name" type="text" value="" style="width: 250px;"></td>
-	</tr>
-	<tr>
-		<td>Дата*:</td>
-		<td><input class="datepicker" name="date" type="text" value="" style="width: 75px;"></td>
-	</tr>
-	<tr>
-		<td>Количество партий*:</td>
-		<td>
-			<select name="rounds">
-				<option value=""></option>
-				<option value="3">3 (до 2-х побед)</option>
-				<option value="5">5 (до 3-х побед)</option>
-				<option value="7">7 (до 4-х побед)</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>Тип протокола:*</td>
-		<td>
-			<select name="protocol">
-				<option value=""></option>
-				<option value="krug">По круговой системе</option>
-				<option value="vib8">На выбывание (8 человек)</option>
-				<option value="vib16">На выбывание (16 человек)</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>Примечание:</td>
-		<td>
-			<textarea name="note" style="width: 250px;"></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td>Игроки*:</td>
-		<td>
-			<select name="players[]" class="player-select" data-placeholder="Выбор игроков" multiple="multiple">
-				<option value=""></option>
-ATATA;
-			$main->sql_connect();
-			$main->sql_query[1] = "SELECT * FROM players ORDER BY surname ASC";
-			$main->sql_execute(1);
-			while($row = mysql_fetch_array($main->sql_res[1])) {
-				$id = $row['id'];
-				$surname = $row['surname'];
-				$name = $row['name'];
-				$patronymic = $row['patronymic'];
-				echo <<<ATATA
-						<option value="$id">
-							$surname $name $patronymic
-						</option>
-ATATA;
-			}
-echo <<< ATATA
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" style="text-align:center;"><input type="submit" value="Добавить" style="color:blue;"></td>
-	</tr>
-</table>
-</form>
 $error
+<button onclick="location.href='add_tournament.php'" style="color:blue;font-size:10px;">Назад</button>
 ATATA;
-			$main->sql_close();
-			
-			*/
 		} else {
 			// =================
 			// если ошибки отсутствуют
@@ -139,7 +68,7 @@ ATATA;
 			$tournament = mysql_result($query, 0, "Auto_increment");
 			$membership = count($playerArray);
 			
-			$i = 0;
+			$i = 0; // счетчик для нумерации запросов в БД
 			$main->sql_query[$i] = "INSERT INTO tournaments VALUES (null,'$name','$name_translit','$date','0','$rounds','$protocol','$note')";			
 			
 			foreach($playerArray as $player) {
@@ -197,21 +126,33 @@ ATATA;
 					for($j=0;$j<count($match);$j++) {
 						$i++;
 						$players = explode("-",$match[$j]);
-						$main->sql_query[$i] = "INSERT INTO matches VALUES (null,'$tournament','".($j+1)."','".$playerArray[$players[0]-1]."','".$playerArray[$players[1]-1]."',null,null,'','0')";
+						$main->sql_query[$i] = "INSERT INTO matches VALUES (null,'$tournament','".($j+1)."','".$playerArray[$players[0]-1]."','".$playerArray[$players[1]-1]."',null,null,'','1')";
 					}
 					
 					break;
 				case "vib8":
-					echo "vib8 в разработке";
+					$p1 = 1;
+					$p2 = 2;
+					$k = 1; // счетчик для нумерации игр
+					for($j=0;$j<($membership/2);$j++) {
+						$i++;
+						$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k','".$playerArray[$p1-1]."','".$playerArray[$p2-1]."',null,null,null,'1')";
+						$p1+=2;
+						$p2+=2;
+						$k++;
+					}
+					for($j=0;$j<10;$j++) {
+						$i++;
+						$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k',null,null,null,null,null,'0')";
+						$k++;
+					}
 					break;
 				case "vib16":
-					echo "vib16 в разработке";
+					exit("vib16 в разработке");
 					break;
 			}
-			
-			for($i=0;$i<count($main->sql_query);$i++) {
-				$main->sql_execute($i);
-				//echo "<p>".$main->sql_query[$i]."</p>";
+			for($j=0;$j<count($main->sql_query);$j++) {
+				$main->sql_execute($j);
 			}
 			
 			$main->sql_close();
@@ -225,14 +166,14 @@ ATATA;
 		$main->sql_connect();
 		echo <<<ATATA
 <h2>Добавить турнир</h2>
-<form class="add-tournament" action="add_tournament.php" method="post">
+<form class="add-tournament" action="add_tournament.php" method="post" autocomplete="off">
 <table>
 	<tr>
 		<td>Название турнира*:</td>
-		<td><input class="name" name="name" type="text" value="" style="width: 250px;"></td>
+		<td><input class="name" name="name" type="text" value="" style="width: 250px;" tabindex="1"></td>
 		<td rowspan="5" valign="top">
 			<p>Выбрано игроков: <span class="selected-players" style="color:red;">0</span></p>
-			<select name="players[]" class="player-select" data-placeholder="Выбор игроков" multiple="multiple">
+			<select name="players[]" class="player-select" data-placeholder="Выбор игроков" multiple="multiple" tabindex="6">
 				<option value=""></option>
 ATATA;
 	$main->sql_query[1] = "SELECT * FROM players ORDER BY surname ASC";
@@ -254,12 +195,12 @@ echo <<< ATATA
 	</tr>
 	<tr>
 		<td>Дата*:</td>
-		<td><input class="date" name="date" type="text" value="" style="width: 75px;" READONLY></td>
+		<td><input class="date" name="date" type="text" value="" style="width: 75px;" tabindex="2" READONLY></td>
 	</tr>
 	<tr>
 		<td>Количество партий*:</td>
 		<td>
-			<select class="rounds" name="rounds">
+			<select class="rounds" name="rounds" tabindex="3">
 				<option value=""></option>
 				<option value="3">3 (до 2-х побед)</option>
 				<option value="5">5 (до 3-х побед)</option>
@@ -270,7 +211,7 @@ echo <<< ATATA
 	<tr>
 		<td>Тип протокола:*</td>
 		<td>
-			<select class="protocol" name="protocol">
+			<select class="protocol" name="protocol" tabindex="4">
 				<option value=""></option>
 				<option value="krug">По круговой системе (от 3 до 12 человек)</option>
 				<option value="vib8">На выбывание (8 человек)</option>
@@ -281,11 +222,11 @@ echo <<< ATATA
 	<tr>
 		<td>Примечание:</td>
 		<td>
-			<textarea name="note" style="width: 250px;"></textarea>
+			<textarea name="note" style="width: 250px;" tabindex="5"></textarea>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3" style="text-align:center;"><input class="submit" type="submit" value="Добавить" style="color:red;"></td>
+		<td colspan="3" style="text-align:center;"><input class="submit" type="submit" value="Добавить" style="color:red;" tabindex="7"></td>
 	</tr>
 </table>
 </form>

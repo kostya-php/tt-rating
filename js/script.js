@@ -46,6 +46,7 @@
 		if(check()) {
 			return true;
 		} else {
+			alert("Неправильно заполнена форма. Проверьте введенные данные и попробуйте еще раз.");
 			return false;
 		}
 	});
@@ -60,7 +61,7 @@ function check() {
 	var v_players = false; // Игроки (в зависимости от протокола)
 	
 	// проверка названия турнира
-	var regexp_name = /^[0-9а-яА-ЯёЁa-zA-Z-\s.,]+$/;
+	var regexp_name = /^[0-9а-яА-ЯёЁa-zA-Z-\s.,!]+$/;
 	var name = $(".name").val();
 	if (regexp_name.test(name)) {
 		v_name = true;
@@ -128,32 +129,32 @@ function check() {
 		}
 		// окончание проверки
 		if(v_name) {
-			$(".name").css("border", "1px solid blue");			
+			$(".name").css("border", "1px solid black");			
 		} else {
 			$(".name").css("border", "1px solid red");
 		}
 		if(v_date) {
-			$(".date").css("border", "1px solid blue");			
+			$(".date").css("border", "1px solid black");			
 		} else {
 			$(".date").css("border", "1px solid red");
 		}
 		if(v_rounds) {
-			$(".rounds").css("border", "1px solid blue");			
+			$(".rounds").css("border", "1px solid black");			
 		} else {
 			$(".rounds").css("border", "1px solid red");
 		}
 		if(v_protocol) {
-			$(".protocol").css("border", "1px solid blue");
+			$(".protocol").css("border", "1px solid black");
 		} else {
 			$(".protocol").css("border", "1px solid red");			
 		}
 		if(v_players) {
-			$(".selected-players").css("color", "blue");
+			$(".selected-players").css("color", "black");
 		} else {
 			$(".selected-players").css("color", "red");
 		}
 		if((v_name)&(v_date)&(v_rounds)&(v_protocol)&(v_players)) {
-			$(".submit").css("color", "blue");
+			$(".submit").css("color", "black");
 			return true;
 		} else {
 			$(".submit").css("color", "red");
