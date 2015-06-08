@@ -233,5 +233,10 @@ echo <<< ATATA
 ATATA;
 	$main->sql_close();
 	}
+	echo <<<ATATA
+	<script type="text/javascript">
+		check_atform();
+	</script>
+ATATA;
 	include "2_footer.php";
 ?>

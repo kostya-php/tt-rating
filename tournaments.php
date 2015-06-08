@@ -32,12 +32,12 @@
 <table>
 	<tr>
 		<!--<td>id</td>-->
-		<td><b>#</b></td>
-		<td><b>Игрок 1</b></td>
-		<td><b>Результат</b></td>
-		<td><b>Игрок 2</b></td>
-		<td><b>Статус</b></td>
-		<td><b>Действия</b></td>
+		<td style="text-align:center;padding:3px;"><b>#</b></td>
+		<td style="text-align:center;padding:3px;"><b>Игрок 1</b></td>
+		<td style="text-align:center;padding:3px;"><b>Результат</b></td>
+		<td style="text-align:center;padding:3px;"><b>Игрок 2</b></td>
+		<td style="text-align:center;padding:3px;"><b>Статус</b></td>
+		<td style="text-align:center;padding:3px;"><b>Действия</b></td>
 	</tr>
 ATATA;
 				$main->sql_query[1] = "SELECT matches.*,
