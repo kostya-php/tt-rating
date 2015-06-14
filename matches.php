@@ -1,8 +1,6 @@
 ﻿<?php
 	$page_name = "Игры";
 	include "1_header.php";
-	require_once "mysql.class.php";
-	$main = new Mysql();
 	$main->sql_connect();
 	if(isset($_GET['id'])) {
 		if(is_numeric($_GET['id'])) {

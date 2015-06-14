@@ -1,6 +1,6 @@
 ﻿<?php
-	require_once "mysql.class.php";
-	$main = new Mysql();
+	require_once "main.class.php";
+	$main = new Main();
 	if(isset($_POST['id']))
 		if($main->check_num($_POST['id'])) {
 			$main->sql_connect();

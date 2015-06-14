@@ -5,8 +5,6 @@
 	include "1_header.php";
 	// если были уже введены какие-либо данные
 	if($_SERVER['REQUEST_METHOD'] == "POST") {
-		require_once "mysql.class.php";
-		$main = new Mysql();
 		if(isset($_POST['surname']))$surname = $_POST['surname']; else $surname = "";
 		if(isset($_POST['name']))$name = $_POST['name']; else $name = "";
 		if(isset($_POST['patronymic']))$patronymic = $_POST['patronymic']; else $patronymic = "";

@@ -2,8 +2,6 @@
 	$page_name = "Добавить турнир";
 	
 	include "1_header.php";
-	require_once "mysql.class.php";
-	$main = new Mysql();
 	if($_SERVER['REQUEST_METHOD'] == "POST") {
 		// =============================
 		// если были уже введены какие-либо данные
