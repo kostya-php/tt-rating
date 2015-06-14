@@ -26,13 +26,13 @@
 		$min_win = ceil($r/2); // минимальное количество партий, необходимое для выйгрыша
 		if(isset($_POST['tech_x'])) {
 			// выбрана опция - Техническое поражение (первый игрок)
-			$main->sql_query[1] = "UPDATE matches SET x='$min_win', y='0', rounds=null, status='3' WHERE id='$id'";
+			$main->sql_query[1] = "UPDATE matches SET x='0', y='$min_win', rounds=null, status='3' WHERE id='$id'";
 			$main->sql_execute(1);
 			Header("Location: tournaments.php?id=".$tournament);
 		} else
 			if(isset($_POST['tech_y'])) {
 				// выбрана опция - Техническое поражение (второй игрок)
-				$main->sql_query[1] = "UPDATE matches SET x='0', y='$min_win', rounds=null, status='3' WHERE id='$id'";
+				$main->sql_query[1] = "UPDATE matches SET x='$min_win', y='0', rounds=null, status='3' WHERE id='$id'";
 				$main->sql_execute(1);
 				Header("Location: tournaments.php?id=".$tournament);
 			} else
