@@ -11,6 +11,7 @@
 					t2.surname as surname2,
 					t2.name as name2,
 					t2.patronymic as patronymic2,
+					t3.id as t_id,
 					t3.name as name,
 					t3.rounds as r
 				FROM matches
@@ -20,30 +21,37 @@
 				WHERE matches.id='$id'";
 		$main->sql_execute(1);
 		$row = mysql_fetch_array($main->sql_res[1]);
+		$tournament = $row['t_id']; // id турнира
 		$r = $row['r']; // количество партий в текущем турнире
 		$min_win = ceil($r/2); // минимальное количество партий, необходимое для выйгрыша
 		if(isset($_POST['tech_x'])) {
 			// выбрана опция - Техническое поражение (первый игрок)
 			$main->sql_query[1] = "UPDATE matches SET x='$min_win', y='0', rounds=null, status='3' WHERE id='$id'";
-			echo $main->sql_query[1];
+			$main->sql_execute(1);
+			Header("Location: tournaments.php?id=".$tournament);
 		} else
 			if(isset($_POST['tech_y'])) {
 				// выбрана опция - Техническое поражение (второй игрок)
 				$main->sql_query[1] = "UPDATE matches SET x='0', y='$min_win', rounds=null, status='3' WHERE id='$id'";
-				echo $main->sql_query[1];
+				$main->sql_execute(1);
+				Header("Location: tournaments.php?id=".$tournament);
 			} else
 				if(isset($_POST['neyav'])) {
 					// выбрана опция - Неявка игроков
 					$main->sql_query[1] = "UPDATE matches SET x=null, y=null, rounds=null, status='4' WHERE id='$id'";
-					echo $main->sql_query[1];
+					$main->sql_execute(1);
+					Header("Location: tournaments.php?id=".$tournament);
 				} else
 					if(isset($_POST['pred'])) {
 						// выбрана опция - По результатам предыдущей встречи
 						if(((isset($_POST['x']))and(is_numeric($_POST['x'])))and((isset($_POST['y']))and(is_numeric($_POST['y'])))) {
 							$x = $_POST['x'];
 							$y = $_POST['y'];
-							$main->sql_query[1] = "UPDATE matches SET x='$x', y='$y', rounds=null, status='5' WHERE id='$id'";
-							echo $main->sql_query[1];
+							if(((($x>$y)and($y>=0))or(($y>$x)and($x>=0)))and(($x==$min_win)or($y==$min_win))) {
+								$main->sql_query[1] = "UPDATE matches SET x='$x', y='$y', rounds=null, status='5' WHERE id='$id'";
+								$main->sql_execute(1);
+								Header("Location: tournaments.php?id=".$tournament);
+							}
 						}
 					} else {
 						// не выбрано никаких опций, проверяем введенные данные
@@ -55,7 +63,7 @@
 							$xx = "";
 							$yy = "";
 							// проверяем соответсвие количества выйгранных партий
-							if((($x>$y)or($y>$x))and(($x==$min_win)or($y==$min_win))) {
+							if(((($x>$y)and($y>=0))or(($y>$x)and($x>=0)))and(($x==$min_win)or($y==$min_win))) {
 								for($i=1;$i<=($x+$y);$i++) {
 									if((isset($_POST['xx_'.$i]))and(isset($_POST['yy_'.$i]))) {
 										$xx = $_POST['xx_'.$i];
@@ -84,20 +92,15 @@
 										} else $error = true;
 									} else $error = true;
 								}
-								//echo $rounds;
 							} else $error = true;
 							// если ошибок не обнаружено, выполняем запрос
 							if(!$error) {
 								$main->sql_query[1] = "UPDATE matches SET x='$x', y='$y', rounds='$rounds', status='2' WHERE id='$id'";
-								echo $main->sql_query[1];
-							} else {
-								echo "error";
+								$main->sql_execute(1);
+								Header("Location: tournaments.php?id=".$tournament);
 							}
 						}
 					}
 		$main->sql_close();
-	} else {
-		die("tratata");
 	}
-// проверить входящие данные о игре, сделать изменения в БД и вернуться на страницу с турниром
 ?>
