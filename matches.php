@@ -13,7 +13,8 @@
 					t2.name as name2,
 					t2.patronymic as patronymic2,
 					t3.name as name,
-					t3.rounds as r
+					t3.rounds as r,
+					t3.protocol as p
 				FROM matches
 				LEFT JOIN players AS t1 ON t1.id=matches.player1
 				LEFT JOIN players AS t2 ON t2.id=matches.player2
@@ -24,6 +25,7 @@
 			if(mysql_num_rows($main->sql_res[1])>0) {
 				$row = mysql_fetch_array($main->sql_res[1]);
 				$tournament = $row['tournament'];
+				$protocol = $row['p'];
 				echo "<a href=\"tournaments.php?id=$tournament\">Назад</a>";
 				$player1 = NULL;
 				$player2 = NULL;
@@ -46,7 +48,10 @@
 				$status = $row['status'];
 				$checked3_1 = "";
 				$checked3_2 = "";
-				$checked4 = "";
+				if($protocol == "vib8")
+					$checked4 = "DISABLED";
+				else
+					$checked4 = "";
 				$checked5 = "";
 				switch($status) {
 					case 0:
@@ -90,13 +95,15 @@
 						break;
 					case 4:
 						// неявка / не играли
-						$x = "0";
-						$y = "0";
-						for($i=0;$i<$r;$i++) {
-							$xx[$i] = "";
-							$yy[$i] = "";
+						if($protocol != "vib8") {
+							$x = "0";
+							$y = "0";
+							for($i=0;$i<$r;$i++) {
+								$xx[$i] = "";
+								$yy[$i] = "";
+							}
+							$checked4 = " CHECKED";
 						}
-						$checked4 = " CHECKED";
 						break;
 					case 5:
 						// по результатам предыдущей встречи
@@ -117,6 +124,7 @@
 <input id="status" name="status" type="hidden" value="$status">
 <input id="match_rounds" name="match_rounds" type="hidden" value="0">
 <input id="rounds" name="rounds" type="hidden" value="$r">
+<input id="protocol" name="protocol" type="hidden" value="$protocol">
 <table style="margin-top:10px;">
 	<tr>
 		<td></td>

@@ -13,7 +13,8 @@
 					t2.patronymic as patronymic2,
 					t3.id as t_id,
 					t3.name as name,
-					t3.rounds as r
+					t3.rounds as r,
+					t3.protocol as p
 				FROM matches
 				LEFT JOIN players AS t1 ON t1.id=matches.player1
 				LEFT JOIN players AS t2 ON t2.id=matches.player2
@@ -22,6 +23,7 @@
 		$main->sql_execute(1);
 		$row = mysql_fetch_array($main->sql_res[1]);
 		$tournament = $row['t_id']; // id турнира
+		$protocol = $row['p']; // протокол турнира
 		$r = $row['r']; // количество партий в текущем турнире
 		$min_win = ceil($r/2); // минимальное количество партий, необходимое для выйгрыша
 		if(isset($_POST['tech_x'])) {
@@ -38,9 +40,13 @@
 			} else
 				if(isset($_POST['neyav'])) {
 					// выбрана опция - Неявка игроков
-					$main->sql_query[1] = "UPDATE matches SET x=null, y=null, rounds=null, status='4' WHERE id='$id'";
-					$main->sql_execute(1);
-					Header("Location: tournaments.php?id=".$tournament);
+					if(($protocol!="vib8")and($protocol!="vib16")) {
+						$main->sql_query[1] = "UPDATE matches SET x=null, y=null, rounds=null, status='4' WHERE id='$id'";
+						$main->sql_execute(1);
+						Header("Location: tournaments.php?id=".$tournament);
+					} else {
+						Header("Location: tournaments.php?id=".$tournament);
+					}
 				} else
 					if(isset($_POST['pred'])) {
 						// выбрана опция - По результатам предыдущей встречи
@@ -50,6 +56,8 @@
 							if(((($x>$y)and($y>=0))or(($y>$x)and($x>=0)))and(($x==$min_win)or($y==$min_win))) {
 								$main->sql_query[1] = "UPDATE matches SET x='$x', y='$y', rounds=null, status='5' WHERE id='$id'";
 								$main->sql_execute(1);
+								Header("Location: tournaments.php?id=".$tournament);
+							} else {
 								Header("Location: tournaments.php?id=".$tournament);
 							}
 						}
@@ -98,7 +106,11 @@
 								$main->sql_query[1] = "UPDATE matches SET x='$x', y='$y', rounds='$rounds', status='2' WHERE id='$id'";
 								$main->sql_execute(1);
 								Header("Location: tournaments.php?id=".$tournament);
+							} else {
+								Header("Location: tournaments.php?id=".$tournament);
 							}
+						} else {
+							Header("Location: tournaments.php?id=".$tournament);
 						}
 					}
 		$main->sql_close();

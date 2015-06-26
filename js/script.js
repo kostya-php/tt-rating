@@ -172,6 +172,7 @@ function check_atform() {
 // проверка соответсткия выбранной опции и состояния элементов. вызывается каждый раз при изменении опции.
 function tech(s) {
 	var rounds = $("#rounds").val();
+	var protocol = $("#protocol").val();
 	switch (s) {
 		case "x":
 			if($("#tech_x").is(":checked")===true){
@@ -186,7 +187,7 @@ function tech(s) {
 				$("#y").val(Math.ceil(rounds / 2));
 				$("#y").prop("readonly", true);
 				$("#tech_y").prop("disabled", true);
-				$("#neyav").prop("disabled", true);
+				if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 				$("#pred").prop("disabled", true);
 			} else {
 				for(i=1;i<=rounds;i++) {
@@ -200,7 +201,7 @@ function tech(s) {
 				$("#y").val("0");
 				$("#y").prop("readonly", true);
 				$("#tech_y").prop("disabled", false);
-				$("#neyav").prop("disabled", false);
+				if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", false); // проверка, что-бы не было неявки в протоколе на выбывание
 				$("#pred").prop("disabled", false);
 			}
 			break;
@@ -217,7 +218,7 @@ function tech(s) {
 				$("#x").val(Math.ceil(rounds / 2));
 				$("#x").prop("readonly", true);
 				$("#tech_x").prop("disabled", true);
-				$("#neyav").prop("disabled", true);
+				if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 				$("#pred").prop("disabled", true);
 			} else {
 				for(i=1;i<=rounds;i++) {
@@ -231,40 +232,41 @@ function tech(s) {
 				$("#x").val("0");
 				$("#x").prop("readonly", true);
 				$("#tech_x").prop("disabled", false);
-				$("#neyav").prop("disabled", false);
+				if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", false); // проверка, что-бы не было неявки в протоколе на выбывание
 				$("#pred").prop("disabled", false);
 			}
 			break;
 		case "xy":
-			if($("#neyav").is(":checked")===true){
-			for(i=1;i<=rounds;i++) {
-				$("#xx_"+i).val("0");
-				$("#xx_"+i).prop('disabled', true);
-				$("#yy_"+i).val("0");
-				$("#yy_"+i).prop('disabled', true);
-			}
-			$("#y").val("0");
-			$("#y").prop("readonly", true);
-			$("#x").val("0");
-			$("#x").prop("readonly", true);
-			$("#tech_x").prop('disabled', true);
-			$("#tech_y").prop('disabled', true);
-				$("#pred").prop("disabled", true);
-			} else {
+			if((protocol!="vib8")&&(protocol!="vib16")) // проверка, что-бы не было неявки в протоколе на выбывание
+				if($("#neyav").is(":checked")===true){
 				for(i=1;i<=rounds;i++) {
-					$("#xx_"+i).val("");
-					$("#xx_"+i).prop('disabled', false);
-					$("#yy_"+i).val("");
-					$("#yy_"+i).prop('disabled', false);
+					$("#xx_"+i).val("0");
+					$("#xx_"+i).prop('disabled', true);
+					$("#yy_"+i).val("0");
+					$("#yy_"+i).prop('disabled', true);
 				}
 				$("#y").val("0");
 				$("#y").prop("readonly", true);
 				$("#x").val("0");
 				$("#x").prop("readonly", true);
-				$("#tech_x").prop('disabled', false);
-				$("#tech_y").prop('disabled', false);
-				$("#pred").prop("disabled", false);
-			}
+				$("#tech_x").prop('disabled', true);
+				$("#tech_y").prop('disabled', true);
+					$("#pred").prop("disabled", true);
+				} else {
+					for(i=1;i<=rounds;i++) {
+						$("#xx_"+i).val("");
+						$("#xx_"+i).prop('disabled', false);
+						$("#yy_"+i).val("");
+						$("#yy_"+i).prop('disabled', false);
+					}
+					$("#y").val("0");
+					$("#y").prop("readonly", true);
+					$("#x").val("0");
+					$("#x").prop("readonly", true);
+					$("#tech_x").prop('disabled', false);
+					$("#tech_y").prop('disabled', false);
+					$("#pred").prop("disabled", false);
+				}
 			break;
 		case "pred":
 			if($("#pred").is(":checked")===true){
@@ -280,7 +282,7 @@ function tech(s) {
 			$("#x").prop("readonly", false);
 			$("#tech_x").prop('disabled', true);
 			$("#tech_y").prop('disabled', true);
-			$("#neyav").prop("disabled", true);
+			if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 			} else {
 				for(i=1;i<=rounds;i++) {
 					$("#xx_"+i).val("");
@@ -294,7 +296,7 @@ function tech(s) {
 				$("#x").prop("readonly", true);
 				$("#tech_x").prop('disabled', false);
 				$("#tech_y").prop('disabled', false);
-				$("#neyav").prop("disabled", false);
+				if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", false); // проверка, что-бы не было неявки в протоколе на выбывание
 			}
 			break;
 	}
@@ -383,6 +385,7 @@ function check_rounds() {
 function check_tech() {
 	var rounds = $("#rounds").val();
 	var status = $("#status").val();
+	var protocol = $("#protocol").val();
 	if((status == "3")||(status == "4")||(status == "5")) {
 		if($("#tech_x").is(":checked")===true){
 			for(i=1;i<=rounds;i++) {
@@ -394,7 +397,7 @@ function check_tech() {
 			$("#x").prop("readonly", true);
 			$("#y").prop("readonly", true);
 			$("#tech_y").prop("disabled", true);
-			$("#neyav").prop("disabled", true);
+			if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 			$("#pred").prop("disabled", true);
 		}
 		if($("#tech_y").is(":checked")===true){
@@ -407,22 +410,23 @@ function check_tech() {
 			$("#x").prop("readonly", true);
 			$("#y").prop("readonly", true);
 			$("#tech_x").prop("disabled", true);
-			$("#neyav").prop("disabled", true);
+			if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 			$("#pred").prop("disabled", true);
 		}
-		if($("#neyav").is(":checked")===true){
-			for(i=1;i<=rounds;i++) {
-				$("#xx_"+i).val("0");
-				$("#xx_"+i).prop('disabled', true);
-				$("#yy_"+i).val("0");
-				$("#yy_"+i).prop('disabled', true);
+		if((protocol!="vib8")&&(protocol!="vib16")) // проверка, что-бы не было неявки в протоколе на выбывание
+			if($("#neyav").is(":checked")===true){
+				for(i=1;i<=rounds;i++) {
+					$("#xx_"+i).val("0");
+					$("#xx_"+i).prop('disabled', true);
+					$("#yy_"+i).val("0");
+					$("#yy_"+i).prop('disabled', true);
+				}
+				$("#x").prop("readonly", true);
+				$("#y").prop("readonly", true);
+				$("#tech_x").prop('disabled', true);
+				$("#tech_y").prop('disabled', true);
+				$("#pred").prop("disabled", true);
 			}
-			$("#x").prop("readonly", true);
-			$("#y").prop("readonly", true);
-			$("#tech_x").prop('disabled', true);
-			$("#tech_y").prop('disabled', true);
-			$("#pred").prop("disabled", true);
-		}
 		if($("#pred").is(":checked")===true){
 			for(i=1;i<=rounds;i++) {
 				$("#xx_"+i).val("0");
@@ -434,7 +438,7 @@ function check_tech() {
 			$("#y").prop("readonly", false);
 			$("#tech_x").prop('disabled', true);
 			$("#tech_y").prop('disabled', true);
-			$("#neyav").prop("disabled", true);
+			if((protocol!="vib8")&&(protocol!="vib16")) $("#neyav").prop("disabled", true); // проверка, что-бы не было неявки в протоколе на выбывание
 		}
 	}
 }
