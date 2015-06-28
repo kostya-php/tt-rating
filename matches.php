@@ -24,101 +24,114 @@
 			echo $main->sql_err[1];
 			if(mysql_num_rows($main->sql_res[1])>0) {
 				$row = mysql_fetch_array($main->sql_res[1]);
-				$tournament = $row['tournament'];
-				$protocol = $row['p'];
-				echo "<a href=\"tournaments.php?id=$tournament\">Назад</a>";
-				$player1 = NULL;
-				$player2 = NULL;
-				if(is_null($row['player1'])) {
-					$player1 = "?";
-				} else {
-					$player1 = $row['surname1']." ".$row['name1'];//." ".$row['patronymic1'];
-				}
-				if(is_null($row['player2'])) {
-					$player2 = "?";
-				} else {
-					$player2 = $row['surname2']." ".$row['name2'];//." ".$row['patronymic2'];
-				}
-				$x = NULL;
-				$y = NULL;
-				$xx = Array();
-				$yy = Array();
-				$r = $row['r'];
-				$rounds = explode(",",$row['rounds']);
 				$status = $row['status'];
-				$checked3_1 = "";
-				$checked3_2 = "";
-				if($protocol == "vib8")
-					$checked4 = "DISABLED";
-				else
-					$checked4 = "";
-				$checked5 = "";
-				switch($status) {
-					case 0:
-						// соперники не определены
-						$x = "0";
-						$y = "0";
-						for($i=0;$i<$r;$i++) {
-							$xx[$i] = "";
-							$yy[$i] = "";
-						}
-						break;
-					case 1:
-						// не играли
-						$x = "0";
-						$y = "0";
-						for($i=0;$i<$r;$i++) {
-							$xx[$i] = "";
-							$yy[$i] = "";
-						}
-						break;
-					case 2:
-						// сыграли
-						$x = $row['x'];
-						$y = $row['y'];
-						for($i=0;$i<count($rounds);$i++) {
-							$temp = explode(":",$rounds[$i]);
-							$xx[$i] = $temp[0];
-							$yy[$i] = $temp[1];
-						}
-						break;
-					case 3:
-						// техническое поражение
-						$x = $row['x'];
-						$y = $row['y'];
-						if($y>$x)$checked3_1 = " CHECKED";
-						if($x>$y)$checked3_2 = " CHECKED";
-						for($i=0;$i<$r;$i++) {
-							$xx[$i] = "";
-							$yy[$i] = "";
-						}						
-						break;
-					case 4:
-						// неявка / не играли
-						if($protocol != "vib8") {
+				$tournament = $row['tournament'];
+				$number = $row['number'];
+				$protocol = $row['p'];
+				
+				$result = $main->check_route($tournament,$number);
+				
+				var_dump($result);
+				if(($status!="0")and($result==true)) {
+				//if($status!="0") {
+					echo "<a href=\"tournaments.php?id=$tournament\">Назад</a>";
+					$player1 = NULL;
+					$player2 = NULL;
+					if(is_null($row['player1'])) {
+						$player1 = "?";
+					} else {
+						$player1 = $row['surname1']." ".$row['name1'];//." ".$row['patronymic1'];
+					}
+					if(is_null($row['player2'])) {
+						$player2 = "?";
+					} else {
+						$player2 = $row['surname2']." ".$row['name2'];//." ".$row['patronymic2'];
+					}
+					$x = NULL;
+					$y = NULL;
+					$xx = Array();
+					$yy = Array();
+					$r = $row['r'];
+					$rounds = explode(",",$row['rounds']);
+					$checked0 = "";
+					$checked3_1 = "";
+					$checked3_2 = "";
+					
+					if(($protocol == "vib8")or($protocol == "vib16"))
+						$checked4 = " DISABLED";
+					else
+					
+						$checked4 = "";
+					$checked5 = "";
+					switch($status) {
+						case 0:
+							// соперники не определены
 							$x = "0";
 							$y = "0";
 							for($i=0;$i<$r;$i++) {
 								$xx[$i] = "";
 								$yy[$i] = "";
 							}
-							$checked4 = " CHECKED";
-						}
-						break;
-					case 5:
-						// по результатам предыдущей встречи
-						$x = $row['x'];
-						$y = $row['y'];
-						for($i=0;$i<$r;$i++) {
-							$xx[$i] = "";
-							$yy[$i] = "";
-						}
-						$checked5 = " CHECKED";
-						break;
-				}				
-				//echo "<h2>$player1 $res $player2</h2>";
-				//var_dump($row['r']);
-				echo <<<ATATA
+							$checked0 = " CHECKED";
+							break;
+						case 1:
+							// не играли
+							$x = "0";
+							$y = "0";
+							for($i=0;$i<$r;$i++) {
+								$xx[$i] = "";
+								$yy[$i] = "";
+							}
+							$checked0 = " CHECKED";
+							break;
+						case 2:
+							// сыграли
+							$x = $row['x'];
+							$y = $row['y'];
+							for($i=0;$i<count($rounds);$i++) {
+								$temp = explode(":",$rounds[$i]);
+								$xx[$i] = $temp[0];
+								$yy[$i] = $temp[1];
+							}
+							$checked0 = " CHECKED";
+							break;
+						case 3:
+							// техническое поражение
+							$x = $row['x'];
+							$y = $row['y'];
+							if($y>$x)$checked3_1 = " CHECKED";
+							if($x>$y)$checked3_2 = " CHECKED";
+							for($i=0;$i<$r;$i++) {
+								$xx[$i] = "";
+								$yy[$i] = "";
+							}						
+							break;
+						case 4:
+							// неявка / не играли
+							if($protocol != "vib8") {
+								$x = "0";
+								$y = "0";
+								for($i=0;$i<$r;$i++) {
+									$xx[$i] = "";
+									$yy[$i] = "";
+								}
+								$checked4 = " CHECKED";
+							}
+							break;
+						case 5:
+							// по результатам предыдущей встречи
+							$x = $row['x'];
+							$y = $row['y'];
+							for($i=0;$i<$r;$i++) {
+								$xx[$i] = "";
+								$yy[$i] = "";
+							}
+							$checked5 = " CHECKED";
+							break;
+					}				
+					//echo "<h2>$player1 $res $player2</h2>";
+					//var_dump($row['r']);
+					echo <<<ATATA
 <form id="edit_match" action="edit_match.php" method="post">
 <input id="id" name="id" type="hidden" value="$id">
 <input id="status" name="status" type="hidden" value="$status">
@@ -147,15 +160,15 @@
 		</td>
 	</tr>
 ATATA;
-				$xxx = "";
-				$yyy = "";
-				for($i=0;$i<$r;$i++) {
-					$j = $i+1;
-					if(isset($xx[$i])) $xxx = $xx[$i];
-						else $xxx = "";
-					if(isset($yy[$i])) $yyy = $yy[$i];
-						else $yyy = "";
-					echo <<<ATATA
+					$xxx = "";
+					$yyy = "";
+					for($i=0;$i<$r;$i++) {
+						$j = $i+1;
+						if(isset($xx[$i])) $xxx = $xx[$i];
+							else $xxx = "";
+						if(isset($yy[$i])) $yyy = $yy[$i];
+							else $yyy = "";
+						echo <<<ATATA
 	<tr>
 		<td style="text-align:center;">$j</td>
 		<td style="text-align:center;">
@@ -166,11 +179,12 @@ ATATA;
 		</td>
 	</tr>
 ATATA;
-				}
-				echo <<<ATATA
+					}
+					echo <<<ATATA
 	<tr>
 		<td colspan="3">
 			<p>Дополнительные опции:</p>
+			<!--
 			<ul type="none" style="margin:5px;padding:5px;">
 				<li><input OnClick="tech('xy');" id="neyav" type="checkbox" value="1" name="neyav" tabindex="1"$checked4>Неявка игроков</li>
 				<li><input OnClick="tech('x');" id="tech_x" name="tech_x" type="checkbox" value="1" tabindex="1"$checked3_1>Техническое поражение: $player1</li>
@@ -178,6 +192,15 @@ ATATA;
 				<li>
 					<input OnClick="tech('pred');" id="pred" name="pred" type="checkbox" value="1"$checked5>По результатам предыдущей встречи
 				</li>
+			</ul>
+			-->
+			<ul type="none" style="margin:5px;padding:5px;">
+				<li><input OnChange="set_option('none');" type="radio" name="option" value="none"$checked0>Отсутствуют</li>
+				<li><input OnChange="set_option('neyav');" type="radio" name="option" value="neyav"$checked4>Неявка игроков</li>
+				<li><input OnChange="set_option('tech_x');" type="radio" name="option" value="tech_x"$checked3_1>Техническое поражение: $player1</li>
+				<li><input OnChange="set_option('tech_y');" type="radio" name="option" value="tech_y"$checked3_2>Техническое поражение: $player2</li>
+				<li><input OnChange="set_option('pred');" type="radio" name="option" value="pred"$checked5>По результатам предыдущей встречи</li>
+				<li style="color:red;"><input OnChange="set_option('reset');" type="radio" name="option" value="reset">Сброс результатов</li>
 			</ul>
 		</td>
 	</tr>
@@ -190,6 +213,7 @@ ATATA;
 </table>
 </form>
 ATATA;
+				} else Header ("Location: tournaments.php?id=$tournament");
 			}
 		} else {
 			Header ("Location: index.php");
@@ -198,11 +222,13 @@ ATATA;
 		Header ("Location: index.php");
 	}
 	$main->sql_close();
+	
 	echo <<<ATATA
 	<script type="text/javascript">
 	check_rounds();
-	check_tech();
+	//check_tech();
 	</script>
 ATATA;
+	
 	include "2_footer.php";
 ?>

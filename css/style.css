@@ -34,64 +34,10 @@ A:active {
     border: 1px solid #000; /* Рамка вокруг текста */
     padding: 3px; /* Поля вокруг текста */
 }
-.games {
-	position: relative;
-	width: 1000px;
-	height: 600px;
-	border: 1px solid black;
-}
-.game1 {
-	left: 10px;
-	top: 10px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game2 {
-	left: 10px;
-	top: 100px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game3 {
-	left: 10px;
-	top: 200px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game4 {
-	left: 10px;
-	top: 290px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game5 {
-	left: 280px;
-	top: 55px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game6 {
-	left: 280px;
-	top: 245px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
-.game14 {
-	left: 550px;
-	top: 150px;
-	width: 250px;
-	height: 80px;
-	position: absolute;
-}
 .parent {
 	//border:1px dashed black;
 	border: 0px;
+	width:300px;
 }
 .child {
 	width:300px;

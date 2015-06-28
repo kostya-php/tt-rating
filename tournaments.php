@@ -218,6 +218,7 @@ ATATA;
 						$py = Array();
 						$match_id = Array();
 						$place = Array();
+						$rounds = Array();
 						$main->sql_query[1] = "SELECT matches.*,
 							t1.surname as surname1,
 							t1.name as name1,
@@ -242,6 +243,8 @@ ATATA;
 								else $px[$i] = "?";
 							if(!is_null($row['y'])) $py[$i] = $row['y'];
 								else $py[$i] = "?";
+							if(!is_null($row['rounds'])) $rounds[$i] = "(".$row['rounds'].")";
+								else $rounds[$i] = "-";
 							/*
 							if($px[$i]>$py[$i]) {
 								$p1[$i] = "<b>".$p1[$i]."</b>";
@@ -263,7 +266,7 @@ ATATA;
 							}
 							if($px[11]<$py[11]) {
 								$place[7] = $p2[11];
-								$place[8] = $p1[11];								
+								$place[8] = $p1[11];
 							}
 						}
 						if((is_numeric($px[12]))and(is_numeric($py[12]))) {
@@ -273,7 +276,7 @@ ATATA;
 							}
 							if($px[12]<$py[12]) {
 								$place[5] = $p2[12];
-								$place[6] = $p1[12];								
+								$place[6] = $p1[12];
 							}
 						}
 						if((is_numeric($px[13]))and(is_numeric($py[13]))) {
@@ -283,7 +286,7 @@ ATATA;
 							}
 							if($px[13]<$py[13]) {
 								$place[3] = $p2[13];
-								$place[4] = $p1[13];								
+								$place[4] = $p1[13];
 							}
 						}
 						if((is_numeric($px[14]))and(is_numeric($py[14]))) {
@@ -293,13 +296,13 @@ ATATA;
 							}
 							if($px[14]<$py[14]) {
 								$place[1] = $p2[14];
-								$place[2] = $p1[14];								
+								$place[2] = $p1[14];
 							}
 						}
 						echo <<<ATATA
 <table>
 	<tr>
-		<td class="parent" style="width:250px;padding-top:20px;padding-bottom:20px;">
+		<td class="parent" style="padding-top:20px;padding-bottom:20px;">
 			<!--{1}-->
 			<a href="matches.php?id=$match_id[1]">
 			<table class="child">
@@ -308,7 +311,7 @@ ATATA;
 					<td class="point">$px[1]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">1</td>
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[1]</i>&nbsp&nbsp&nbsp<span style="color:black;">1</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[1]</td>
@@ -325,8 +328,8 @@ ATATA;
 					<td class="player">$p1[5]</td>
 					<td class="point">$px[5]</td>
 				</tr>
-				<tr style="height:85px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">5</td>
+				<tr style="height:105px;">
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[5]</i>&nbsp&nbsp&nbsp<span style="color:black;">5</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[5]</td>
@@ -343,8 +346,8 @@ ATATA;
 					<td class="player">$p1[14]</td>
 					<td class="point">$px[14]</td>
 				</tr>
-				<tr style="height:210px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">14</td>
+				<tr style="height:250px;">
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[14]</i>&nbsp&nbsp&nbsp<span style="color:black;">14</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[14]</td>
@@ -360,7 +363,7 @@ ATATA;
 	</tr>
 	
 	<tr>
-		<td class="parent" style="width:250px;padding-top:20px;padding-bottom:20px;">
+		<td class="parent" style="padding-top:20px;padding-bottom:20px;">
 			<!--{2}-->
 			<a href="matches.php?id=$match_id[2]">
 			<table class="child">
@@ -369,7 +372,7 @@ ATATA;
 					<td class="point">$px[2]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">2</td>
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[2]</i>&nbsp&nbsp&nbsp<span style="color:black;">2</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[2]</td>
@@ -381,7 +384,7 @@ ATATA;
 	</tr>
 	
 	<tr>
-		<td class="parent" style="width:250px;padding-top:20px;padding-bottom:20px;">
+		<td class="parent" style="padding-top:20px;padding-bottom:20px;">
 			<!--{3}-->
 			<a href="matches.php?id=$match_id[3]">
 			<table class="child">
@@ -390,7 +393,7 @@ ATATA;
 					<td class="point">$px[3]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">3</td>
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[3]</i>&nbsp&nbsp&nbsp<span style="color:black;">3</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[3]</td>
@@ -407,8 +410,8 @@ ATATA;
 					<td class="player">$p1[6]</td>
 					<td class="point">$px[6]</td>
 				</tr>
-				<tr style="height:85px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">6</td>
+				<tr style="height:105px;">
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[6]</i>&nbsp&nbsp&nbsp<span style="color:black;">6</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[6]</td>
@@ -420,7 +423,7 @@ ATATA;
 	</tr>
 	
 	<tr>
-		<td class="parent" style="width:250px;padding-top:20px;padding-bottom:20px;">
+		<td class="parent" style="padding-top:20px;padding-bottom:20px;">
 			<!--{4}-->
 			<a href="matches.php?id=$match_id[4]">
 			<table class="child">
@@ -429,7 +432,7 @@ ATATA;
 					<td class="point">$px[4]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="2" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">4</td>
+					<td colspan="2" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[4]</i>&nbsp&nbsp&nbsp<span style="color:black;">4</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[4]</td>
@@ -453,7 +456,7 @@ ATATA;
 				</tr>
 				
 				<tr style="height:70px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">9</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[9]</i>&nbsp&nbsp&nbsp<span style="color:black;">9</span></td>
 				</tr>
 				
 				<tr>
@@ -471,8 +474,8 @@ ATATA;
 					<td class="player">$p1[13]</td>
 					<td class="point">$px[13]</td>
 				</tr>
-				<tr style="height:190px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">13</td>
+				<tr style="height:210px;">
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[13]</i>&nbsp&nbsp&nbsp<span style="color:black;">13</span></td>
 				</tr>
 				<tr>
 					<td class="player">$p2[13]</td>
@@ -498,7 +501,7 @@ ATATA;
 					<td style="width:25px;">$px[7]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">7</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[7]</i>&nbsp&nbsp&nbsp<span style="color:black;">7</span></td>
 				</tr>
 				<tr>
 					<td class="los">-2</td>
@@ -521,7 +524,7 @@ ATATA;
 					<td style="width:25px;">$px[8]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">8</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[8]</i>&nbsp&nbsp&nbsp<span style="color:black;">8</span></td>
 				</tr>
 				<tr>
 					<td class="los">-4</td>
@@ -540,7 +543,7 @@ ATATA;
 					<td class="point">$px[10]</td>
 				</tr>
 				<tr style="height:70px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">10</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[10]</i>&nbsp&nbsp&nbsp<span style="color:black;">10</span></td>
 				</tr>
 				<tr>
 					<td class="los">-6</td>
@@ -569,7 +572,7 @@ ATATA;
 					<td style="width:25px;">$px[12]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">12</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[12]</i>&nbsp&nbsp&nbsp<span style="color:black;">12</span></td>
 				</tr>
 				<tr>
 					<td class="los">-10</td>
@@ -598,7 +601,7 @@ ATATA;
 					<td style="width:25px;">$px[11]</td>
 				</tr>
 				<tr style="height:15px;">
-					<td colspan="3" style="border:0px;border-right:1px solid black;padding:0px;font-size:10px;color:blue;">11</td>
+					<td colspan="3" style="border:0px;border-right:1px solid black;color:blue;"><i>$rounds[11]</i>&nbsp&nbsp&nbsp<span style="color:black;">11</span></td>
 				</tr>
 				<tr>
 					<td class="los">-8</td>
