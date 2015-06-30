@@ -15,8 +15,17 @@
 			$main->sql_execute(1);
 			if(mysql_num_rows($main->sql_res[1])>0) {
 				$row = mysql_fetch_array($main->sql_res[1]);
-				echo "<h2>Турнир \"".$row['name']."\"</h2>";
+				//echo "<h2>Турнир \"".$row['name']."\"</h2>";
+				$name = $row['name'];
 				
+				echo <<<ATATA
+<h2>Турнир "$name"</h2>
+<form action="delete_tournament.php" method="post">
+	<input name="id" type="hidden" value="$tournament">
+	<input name="name" type="hidden" value="$name">
+	<input type="submit" value="Удалить турнир" style="font-size: 10px;color: red;">
+</form>
+ATATA;
 				switch($row['protocol']) {
 					case "krug":
 						$main->sql_query[1] = "SELECT * FROM in_tournament LEFT JOIN players ON players.id=in_tournament.player WHERE tournament='$tournament'";
@@ -95,7 +104,7 @@
 							}
 						}
 						$n = count($player);
-						echo chr(13)."<table>".chr(13);						
+						echo chr(13)."<table style=\"margin-top:30px;\">".chr(13);						
 						for ($i = 0; $i <= $n; $i++) {
 							echo "	<tr>".chr(13);
 							for ($j = 0; $j <= $n + 4; $j++) {

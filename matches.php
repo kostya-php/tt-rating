@@ -226,7 +226,7 @@ ATATA;
 	echo <<<ATATA
 	<script type="text/javascript">
 	check_rounds();
-	//check_tech();
+	check_option();
 	</script>
 ATATA;
 	

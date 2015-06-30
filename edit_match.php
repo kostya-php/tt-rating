@@ -207,8 +207,7 @@
 			curl_close($send);
 		}
 		*/
-		
-		Header("Location: tournaments.php?id=".$tournament);
+		Header("Location: r_matches.php?t=$tournament&n=$number");
 		$main->sql_close();
 	}
 ?>

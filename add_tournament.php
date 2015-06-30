@@ -67,11 +67,11 @@ ATATA;
 			$membership = count($playerArray);
 			
 			$i = 0; // счетчик для нумерации запросов в БД
-			$main->sql_query[$i] = "INSERT INTO tournaments VALUES (null,'$name','$name_translit','$date','0','$rounds','$protocol','$note')";			
+			$main->sql_query[$i] = "INSERT INTO tournaments VALUES (null,'$name','$name_translit','$date','0','$rounds','$protocol','$note')";
 			
 			foreach($playerArray as $player) {
 				$i++;
-				$main->sql_query[$i] = "INSERT INTO in_tournament VALUES (null,'$tournament','$i','$player')";
+				$main->sql_query[$i] = "INSERT INTO in_tournament VALUES (null,'$tournament','$i','$player',null)";
 			}
 			
 			switch($protocol) {

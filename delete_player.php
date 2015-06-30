@@ -1,6 +1,8 @@
 ﻿<?php
 	if(isset($_POST['submit'])) {
 		if(($_POST['submit']=="OK")and(is_numeric($_POST['id']))) {
+			require_once "main.class.php";
+			$main = new Main();
 			$id = $_POST['id'];
 			$main->sql_connect();
 			$main->sql_query[1] = "DELETE FROM players WHERE id='$id'";

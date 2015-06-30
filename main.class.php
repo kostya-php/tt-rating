@@ -330,23 +330,29 @@ class Main {
 					"7" => Array(9,11,12,13),
 					"8" => Array(10,11,12,13),
 					"9" => Array(12,13),
-					"10" => Array(12,13)
+					"10" => Array(12,13),
+					"11" => Array(),
+					"12" => Array(),
+					"13" => Array(),
+					"14" => Array()
 				);
-				// Генерируем запрос
-				$query = "SELECT * FROM matches WHERE tournament='$t' AND (";
-				for($i=0;$i<count($games[$n]);$i++) {
-					$game = $games[$n][$i];
-					$query.="number='$game'";
-					if($i!=(count($games[$n])-1))
-						$query.=" OR ";
-				}
-				$query.=")";
-				
-				$this->sql_query[1] = $query;
-				$this->sql_execute(1);
-				while($row = mysql_fetch_array($this->sql_res[1])) {
-					$status = $row['status'];
-					if($status > 1) $result = false;
+				if(count($games[$n])>0) {
+					// Генерируем запрос
+					$query = "SELECT * FROM matches WHERE tournament='$t' AND (";
+					for($i=0;$i<count($games[$n]);$i++) {
+						$game = $games[$n][$i];
+						$query.="number='$game'";
+						if($i!=(count($games[$n])-1))
+							$query.=" OR ";
+					}
+					$query.=")";
+					
+					$this->sql_query[1] = $query;
+					$this->sql_execute(1);
+					while($row = mysql_fetch_array($this->sql_res[1])) {
+						$status = $row['status'];
+						if($status > 1) $result = false;
+					}
 				}
 				break;
 		}
