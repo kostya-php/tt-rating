@@ -31,7 +31,6 @@
 				
 				$result = $main->check_route($tournament,$number);
 				
-				var_dump($result);
 				if(($status!="0")and($result==true)) {
 				//if($status!="0") {
 					echo "<a href=\"tournaments.php?id=$tournament\">Назад</a>";

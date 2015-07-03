@@ -129,24 +129,42 @@ ATATA;
 					
 					break;
 				case "vib8":
-					$p1 = 1;
-					$p2 = 2;
-					$k = 1; // счетчик для нумерации игр
-					for($j=0;$j<($membership/2);$j++) {
-						$i++;
-						$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k','".$playerArray[$p1-1]."','".$playerArray[$p2-1]."',null,null,null,'1')";
-						$p1+=2;
-						$p2+=2;
-						$k++;
-					}
-					for($j=0;$j<10;$j++) {
-						$i++;
-						$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k',null,null,null,null,null,'0')";
-						$k++;
+					if($membership == 8) {
+						$p1 = 1;
+						$p2 = 2;
+						$k = 1; // счетчик для нумерации игр
+						for($j=0;$j<($membership/2);$j++) {
+							$i++;
+							$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k','".$playerArray[$p1-1]."','".$playerArray[$p2-1]."',null,null,null,'1')";
+							$p1+=2;
+							$p2+=2;
+							$k++;
+						}
+						for($j=0;$j<10;$j++) {
+							$i++;
+							$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k',null,null,null,null,null,'0')";
+							$k++;
+						}
 					}
 					break;
 				case "vib16":
-					exit("vib16 в разработке");
+					if($membership == 16) {
+						$p1 = 1;
+						$p2 = 2;
+						$k = 1; // счетчик для нумерации игр
+						for($j=0;$j<($membership/2);$j++) {
+							$i++;
+							$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k','".$playerArray[$p1-1]."','".$playerArray[$p2-1]."',null,null,null,'1')";
+							$p1+=2;
+							$p2+=2;
+							$k++;
+						}
+						for($j=0;$j<24;$j++) {
+							$i++;
+							$main->sql_query[$i] = "INSERT INTO matches VALUES(null,'$tournament','$k',null,null,null,null,null,'0')";
+							$k++;
+						}
+					}
 					break;
 			}
 			for($j=0;$j<count($main->sql_query);$j++) {
